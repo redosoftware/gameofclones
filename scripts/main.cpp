@@ -1,10 +1,9 @@
-#include <iostream>
 #include <stdio.h>
-
+#include "theoregontrail.h"
 
 int main()
 {
-    std::cout << "Testing!";
+    runGame();
 
     getchar();
 
