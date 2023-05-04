@@ -1,7 +1,7 @@
 #ifndef THE_OREGON_TRAIL_H
 #define THE_OREGON_TRAIL_H
 
-typedef enum
+enum resourceType
 {
     CRIPTO_UNITS,
     DARK_MATTER,
@@ -10,16 +10,20 @@ typedef enum
     SPARE_PARTS,
     MEDICAL_SUPPLIES,
     MAX_RESOURCE_INDEX
-} resourceType;
+};
 
 int getNumberInput();
 
 bool hasEnoughCash(int price);
 int getResourceAmountByPrice(int price);
 
-void showGameIntro();
+void printGameIntro();
+void printGameEnd();
+
 void initialResourcesPurchase();
-void printResourcesInfo();
+
+void calculateProgress();
+void printTripInfo();
 
 void runGame();
 

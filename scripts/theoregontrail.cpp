@@ -1,10 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "theoregontrail.h"
+
+const int SPEED_FACTOR = 1000;
+const int TIME_MIN_FACTOR = 10;
+const int TIME_MAX_FACTOR = 100;
 
 int resourceAmounts[6] = {700, 0, 0, 0, 0, 0};
 char resourceNames[6][20] = {"Cripto Units", "Dark Matter", "Food", "Energy Cartridges", "Spare Parts", "Medical Supplies"};
 
-bool tripEnded;
+unsigned int distanceTraveled = 0;
+unsigned int distanceToTitan = 1200000000;
+
+unsigned int stardate = 1368;
 
 int getNumberInput()
 {
@@ -32,9 +41,14 @@ int getResourceAmountByPrice(int price)
     return price;
 }
 
-void showGameIntro()
+void printGameIntro()
 {
     printf("Game Intro!\n");
+}
+
+void printGameEnd()
+{
+    printf("You reached Titan!\n");
 }
 
 void initialResourcesPurchase()
@@ -68,8 +82,22 @@ void initialResourcesPurchase()
     }
 }
 
-void printResourcesInfo()
+void calculateProgress()
 {
+    // TODO: make this to have sense (or maybe not?)
+    int speed = resourceAmounts[DARK_MATTER] * SPEED_FACTOR;
+    int time = rand() % (TIME_MAX_FACTOR + 1 - TIME_MIN_FACTOR) + TIME_MIN_FACTOR;
+
+    stardate += time;
+    distanceTraveled += speed * time;
+}
+
+void printTripInfo()
+{
+    printf("Stardate %d\n", stardate);
+
+    printf("Distance to Titan: %d kilometers\n", (distanceToTitan - distanceTraveled));
+
     for (int i = 0; i < MAX_RESOURCE_INDEX; i++)
     {
         printf("%s: %d\t", resourceNames[i], resourceAmounts[i]);
@@ -80,14 +108,24 @@ void printResourcesInfo()
 
 void runGame()
 {
-    showGameIntro();
+    srand((unsigned int)time(NULL));
+
+    bool tripEnded = false;
     
+    printGameIntro();
     initialResourcesPurchase();
 
-    printResourcesInfo();
+    while (!tripEnded)
+    {
+        calculateProgress();
+        printTripInfo();
 
-    // while (!tripEnded)
-    // {
+        tripEnded = distanceTraveled >= distanceToTitan;
 
-    // }
+        getchar();
+    }
+
+    printGameEnd();
+
+    getchar();
 }
